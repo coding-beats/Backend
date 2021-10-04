@@ -15,7 +15,7 @@ let getMusicHandler = (req, res) => {
 
 //function to create a new music
 let createMusicHandler = async (req, res) => {
-
+    console.log("body",req.body);
     let { title1, artist1, note1, songUrl1, email1 } = req.body;
     await musicModel.create({
         title: title1,
@@ -26,6 +26,7 @@ let createMusicHandler = async (req, res) => {
     })
 
     musicModel.find({ email: email1 }).then(data => {
+        console.log("line 28",data);
         res.status(200).json(data);
     }).catch((error) => {
         res.status(500).send('error there is no recived data');

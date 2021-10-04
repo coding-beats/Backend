@@ -12,10 +12,10 @@ function getMusicListHandler(req, res) {
     params: {term: songName, locale: 'en-US', limit: '1'},
     headers: {
       'x-rapidapi-host': 'shazam.p.rapidapi.com',
-      'x-rapidapi-key': 'ca1fe05a67msh803e5c79cd99588p194cb2jsn3f78b68111df'
+      'x-rapidapi-key': `${process.env.MUSIC_API_KEY}`
     }
   };
-  console.log(musicURL);
+  // console.log(musicURL);
   // console.log('before sending request');
   if (cacheMemory[songName] !== undefined) {
     // console.log("the data is already exist");
@@ -26,7 +26,7 @@ function getMusicListHandler(req, res) {
     try {
       axios.request(musicURL).then(MusicResults => {
         // console.log(MusicResults);
-        console.log(123123123, MusicResults.data.tracks.hits);
+        // console.log( MusicResults.data.tracks.hits);
         // console.log('inside sending request');
 
         let newMusicArray = MusicResults.data.tracks.hits.map(element => {

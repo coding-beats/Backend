@@ -7,12 +7,12 @@ function getMusicSearchHandler(req, res) {
   // console.log(req.query);
 
   let musicURL = {
-    method: 'GET',
-    url: 'https://shazam.p.rapidapi.com/search',
-    params: { term: songName, locale: 'en-US', limit: '1' },
-    headers: {
-      'x-rapidapi-host': 'shazam.p.rapidapi.com',
-      'x-rapidapi-key': `${process.env.MUSIC_API_KEY}`
+      method: 'GET',
+      url: 'https://shazam.p.rapidapi.com/songs/list-recommendations',
+      params: {key: songName, locale: 'en-US'},
+      headers: {
+        'x-rapidapi-host': 'shazam.p.rapidapi.com',
+        'x-rapidapi-key': `${process.env.MUSIC_API_KEY}`
     }
   };
   // console.log(musicURL);
@@ -26,7 +26,7 @@ function getMusicSearchHandler(req, res) {
     try {
       axios.request(musicURL).then(MusicResults => {
         // console.log(MusicResults);
-        console.log( MusicResults.data.tracks.hits);
+        // console.log("hi",MusicResults.data.tracks.hits[0].images);
         // console.log('inside sending request');
 
         let newMusicArray = MusicResults.data.tracks.hits.map(element => {
@@ -47,7 +47,7 @@ function getMusicSearchHandler(req, res) {
 // music class
 class MusicData {
   constructor(element) {
-    // this.img = element.tracks.images.coverart
+    this.img = element.track.images.coverart
     this.title = element.track.title;
     this.artist = element.track.subtitle;
     this.songURL = element.track.url;

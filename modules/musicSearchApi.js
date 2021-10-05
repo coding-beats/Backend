@@ -7,12 +7,12 @@ function getMusicSearchHandler(req, res) {
   // console.log(req.query);
 
   let musicURL = {
-      method: 'GET',
-      url: 'https://shazam.p.rapidapi.com/songs/list-recommendations',
-      params: {key: songName, locale: 'en-US'},
-      headers: {
-        'x-rapidapi-host': 'shazam.p.rapidapi.com',
-        'x-rapidapi-key': `${process.env.MUSIC_API_KEY}`
+    method: 'GET',
+    url: 'https://shazam.p.rapidapi.com/search',
+    params: { term: songName, locale: 'en-US', limit: '1' },
+    headers: {
+      'x-rapidapi-host': 'shazam.p.rapidapi.com',
+      'x-rapidapi-key': `${process.env.MUSIC_API_KEY}`
     }
   };
   // console.log(musicURL);

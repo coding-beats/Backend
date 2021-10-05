@@ -9,7 +9,7 @@ function getMusicSearchHandler(req, res) {
   let musicURL = {
     method: 'GET',
     url: 'https://shazam.p.rapidapi.com/songs/list-artist-top-tracks',
-    params: { id: '40008598', locale: 'en-US' },
+    params: { id: songName, locale: 'en-US' },
     headers: {
       'x-rapidapi-host': 'shazam.p.rapidapi.com',
       'x-rapidapi-key': `${process.env.MUSIC_API_KEY}`

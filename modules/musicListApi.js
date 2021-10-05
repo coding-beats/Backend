@@ -2,14 +2,14 @@ const axios = require('axios');
 let cacheMemory = {};
 
 // get music Handler fun
-function getMusicListHandler(req, res) {
-  let songName = req.query.song;
+function getMusicSearchHandler(req, res) {
+  let songName = req.query.songID;
   // console.log(req.query);
 
   let musicURL = {
     method: 'GET',
-    url: 'https://shazam.p.rapidapi.com/search',
-    params: {term: songName, locale: 'en-US', limit: '1'},
+    url: 'https://shazam.p.rapidapi.com/songs/list-artist-top-tracks',
+    params: { id: '40008598', locale: 'en-US' },
     headers: {
       'x-rapidapi-host': 'shazam.p.rapidapi.com',
       'x-rapidapi-key': `${process.env.MUSIC_API_KEY}`
@@ -17,29 +17,20 @@ function getMusicListHandler(req, res) {
   };
   // console.log(musicURL);
   // console.log('before sending request');
-  if (cacheMemory[songName] !== undefined) {
-    // console.log("the data is already exist");
-    // console.log(cacheMemory);
-    res.send(cacheMemory[songName]);
-  }
-  else {
-    try {
-      axios.request(musicURL).then(MusicResults => {
-        // console.log(MusicResults);
-        // console.log( MusicResults.data.tracks.hits);
-        // console.log('inside sending request');
-
-        let newMusicArray = MusicResults.data.tracks.hits.map(element => {
-          return new MusicData(element);
-        });
-        cacheMemory[songName] = newMusicArray;
-        res.send(newMusicArray);
+  try {
+    axios.request(musicURL).then(MusicResults => {
+      // console.log("test",MusicResults.data.tracks);
+      // console.log( MusicResults.data.tracks.hits);
+      // console.log('inside sending request');
+      let newMusicArray = MusicResults.data.tracks.map(element => {
+        return new MusicData(element);
       });
-    }
-    catch (error) {
-      res.send(error);
-    }
-
+      cacheMemory[songName] = newMusicArray;
+      res.send(newMusicArray);
+    });
+  }
+  catch (error) {
+    res.send(error);
   }
   // console.log('after sending request');
 }
@@ -47,13 +38,14 @@ function getMusicListHandler(req, res) {
 // music class
 class MusicData {
   constructor(element) {
-    this.title = element.track.title;
-    this.artist = element.track.subtitle;
-    this.songURL = element.track.url;
+    this.img = element.images.coverart
+    this.title = element.title;
+    this.artist = element.subtitle;
+    this.songURL = element.url;
   }
 }
 console.log(MusicData)
 
 
 
-module.exports = getMusicListHandler;
+module.exports = getMusicSearchHandler;

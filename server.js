@@ -14,11 +14,13 @@ const MONGO_SERVER = process.env.MONGO_SERVER
 mongoose.connect(`${MONGO_SERVER}`);
 
 const getMusicListHandler = require('./modules/musicListApi.js');
+const getMusicSearchHandler = require('./modules/musicSearchApi.js');
 const {getMusicHandler, createMusicHandler, deleteMusicHandler, UpdateMusicHandler} = require("./modules/musicHandler");
 
 // Routes
 server.get('/', homeRouteHandler);
 server.get('/getMusicList', getMusicListHandler);
+server.get('/getMusicSearch', getMusicSearchHandler);
 server.get('/getMusic', getMusicHandler);
 server.post('/createMusic', createMusicHandler);
 server.delete('/deleteMusic', deleteMusicHandler);

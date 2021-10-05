@@ -16,13 +16,14 @@ let getMusicHandler = (req, res) => {
 //function to create a new music
 let createMusicHandler = async (req, res) => {
     console.log("body",req.body);
-    let { title1, artist1, note1, songUrl1, email1 } = req.body;
+    let {img1, title1, artist1, note1, songUrl1, email1 } = req.body;
     await musicModel.create({
         title: title1,
         artist: artist1,
         note: note1,
         songUrl : songUrl1,
-        email: email1
+        email: email1,
+        img: img1
     })
 
     musicModel.find({ email: email1 }).then(data => {
@@ -52,12 +53,12 @@ let deleteMusicHandler = (req, res) => {
 //function to update a specific data from db
 let UpdateMusicHandler = (req, res) => {
 
-    let { title, artist, note, songUrl, id, email1 } = req.body;
-
-    musicModel.findByIdAndUpdate(id, { title, artist, note, songUrl }).then(() => {
-        musicModel.find({ email: email1 }).then(data => {
+    let { img, title, artist, note, songUrl, id, email } = req.body;
+    console.log("req.body",req.body);
+    musicModel.findByIdAndUpdate(id, { img, title, artist, note, songUrl }).then(() => {
+        musicModel.find({ email: email }).then(data => {
+            console.log("data",data);
             res.status(200).json(data);
-            console.log(data);
         })
     }).catch((error) => {
         res.status(500).send('error there is no file');
